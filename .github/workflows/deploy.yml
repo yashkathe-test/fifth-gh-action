@@ -29,12 +29,12 @@ jobs:
         run: npm test
       - name: Output information
         run: | 
-          echo "MONGODB_USER:  ${{ env.MONGODB_USERNAME  }}"
+          echo "MONGODB_USER:  ${{ secrets.MONGODB_USER  }}"
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |        
-          echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"
+          echo "MONGODB_DB_NAME: ${{ secrets.MONGODB_PASSWORD }}"
           
