@@ -1,0 +1,38 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - dev
+env:
+  MONGODB_DB_NAME: gha-demo
+jobs:
+  test:
+    env:
+      MONGODB_CLUSTER_ADDRESS: 0.0.0.0:8080
+      MONGODB_USERNAME: yashkathe
+      MONGODB_PASSWORD: 1806
+    environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run server
+        run: npm start & npx wait-on http://127.0.0.1:XYZ
+      - name: Run tests
+        run: npm test
+      - name: Output information
+        run: echo "..."
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |        
+          echo "..."
